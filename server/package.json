@@ -12,12 +12,15 @@
   "license": "ISC",
   "dependencies": {
     "firebase": "^4.7.0",
+    "inversify": "^4.5.2",
+    "reflect-metadata": "^0.1.10",
     "restify": "^6.3.4",
     "rxjs": "^5.5.3",
     "typescript": "^2.6.2"
   },
   "devDependencies": {
     "@types/firebase": "^2.4.32",
+    "@types/inversify": "^2.0.33",
     "@types/reflect-metadata": "0.0.5",
     "@types/restify": "^5.0.6"
   }
