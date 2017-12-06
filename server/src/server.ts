@@ -5,7 +5,9 @@ import 'rxjs';
 import { inject, injectable, Container } from 'inversify';
 import 'reflect-metadata';
 import { DataProvider } from './dataprovider/dataprovider';
+import { UserService, GroupService } from './services/services.index';
 import container from './inversify.config';
+import { Routing } from './routing/routing';
 
 export class ServerFactory {
 
@@ -23,23 +25,19 @@ export class Server {
 
         this.useFirebase();
 
-        let dataProvider = container.get(DataProvider);
-        
+        let routing = container.get(Routing);
 
         this.server = restify.createServer({
             name: 'server',
             version: '1.0.0'
         });
 
-        this.server.get('/api/v1/:name', (request: restify.Request, response: restify.Response) => {
-            dataProvider.getUser(request.params.name)
-                .then(user => {
-                    response.json({
-                        name: user.name,
-                        groups: user.groups
-                    });
-                });
-        });
+        let userService = container.get(UserService);
+        let groupService = container.get(GroupService);
+
+        routing.setServer(this.server)
+            .registerUserRoutes(userService)
+            .registerGroupRoutes(groupService);
 
         this.server.listen(8080, () => {
             console.log('server listening on port 8080');
